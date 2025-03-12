@@ -2,15 +2,33 @@ using UnityEngine;
 
 public class EscapeEnemyController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] Transform _player;
+    public float distanceMax;
+
+    private SteeringController _controller;
+
+
     void Start()
     {
-        
+        _controller = GetComponent<SteeringController>();
+
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        
+        float disatance = Vector3.Distance(transform.position, _player.position);
+
+        if (disatance>distanceMax)
+        {
+            _controller.behaviors.Clear();
+            
+            _controller.behaviors.Add(new WanderBehavior {speed = 2.5f, circleDistance = 8, circleRadius=8, angleTime = 1, targetTime=1});
+        }
+        else
+        {
+            _controller.behaviors.Clear();
+            _controller.behaviors.Add(new FleeBehavior { target = _player, speed = 2.5f});
+        }
     }
 }

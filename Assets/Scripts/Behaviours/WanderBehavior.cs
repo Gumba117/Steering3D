@@ -60,7 +60,7 @@ public class WanderBehavior : SteeringBehavior
     }
     private void ChangeTarget()
     {
-        _wanderTarget = new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+        _wanderTarget = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
         
     }
     private void ChangeAngle()
