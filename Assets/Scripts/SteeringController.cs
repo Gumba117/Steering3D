@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class SteeringController : MonoBehaviour
     public List<SteeringBehavior> behaviors = new List<SteeringBehavior>();
     public float maxForce = 10f;
     private Vector3 _velocity;
+
 
     private void FixedUpdate()
     {
