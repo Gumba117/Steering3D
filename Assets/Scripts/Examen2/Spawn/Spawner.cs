@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spawner
 {
     public GameObject prefab;
-    public float[] spawnArea = { -5f, 5f, -5f, 5f };
+    public float[] spawnArea = { -40f, 40f, -40f, 40f };
     public List<GameObject> spawnedObjects = new List<GameObject>();
 
     private MonoBehaviour _controller;
