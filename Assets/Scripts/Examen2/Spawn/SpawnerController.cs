@@ -32,7 +32,7 @@ public class SpawnerController : MonoBehaviour
         foreach (GameObject enemy in _enemySpawner.spawnedObjects)
         {
             enemy.GetComponent<SteeringController>().behaviors.Clear();
-            enemy.GetComponent<SteeringController>().behaviors.Add(new SeekBehavior { target = GameObject.Find("Player").transform, speed = 5, slowingRadius = 5 });
+            enemy.GetComponent<SteeringController>().behaviors.Add(new SeekBehavior(  GameObject.Find("Player").transform, 5) { target = GameObject.Find("Player").transform, speed = 5, slowingRadius = 5 });
         }
     }
 

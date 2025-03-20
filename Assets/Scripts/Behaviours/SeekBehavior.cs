@@ -5,6 +5,14 @@ public class SeekBehavior : SteeringBehavior
     public Transform target;
     public float speed;
     public float slowingRadius = 5;
+
+    //Añadir un constructor
+    
+    public SeekBehavior(Transform target, float speed)
+    {
+        this.target = target;
+        this.speed = speed;
+    }
     public override Vector3 GetSteeringForce()
     {
         float desiredSpeed;
