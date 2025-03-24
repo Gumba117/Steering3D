@@ -16,11 +16,17 @@ public class Enemy : Entity
     public SteeringController steeringController;
     public Transform target;
 
-    public Enemy(EnemyType type, SteeringController steeringController, Transform target)
+    StateMachine<Enemy> stateMachine;
+
+    public Enemy(EnemyType type, SteeringController steeringController, Transform target, StateMachine<Enemy> stateMachine, State<Enemy> state)
     {
         Type = type;
         this.steeringController = steeringController;
         this.target = target;
+
+        this.stateMachine = stateMachine;
+
+        stateMachine.ChangeState(state);
 
         SetAttributes(type);
 
