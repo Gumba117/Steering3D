@@ -545,7 +545,7 @@ Transform:
   m_GameObject: {fileID: 899803720}
   serializedVersion: 2
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: -10.82, y: 3, z: -6.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -603,7 +603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde91e6b4cae6724a878f602e5958ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 6134062690010677559, guid: 7bb47e7e0c11e5040abc62884fca0ada, type: 3}
+  prefab: {fileID: 6134062690010677559, guid: f7a012d86adb27344b71d5a8872a157e, type: 3}
   numObjects: 10
   spawnArea:
   - -5
@@ -688,7 +688,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 47097336}
   rb: {fileID: 1122334524}
-  moveSpeed: 20
+  moveSpeed: 8
   _obstacleController: {fileID: 932629999}
 --- !u!135 &1122334526
 SphereCollider:
@@ -793,6 +793,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   behaviors: []
   maxForce: 10
+  velocity: {x: 0, y: 0, z: 0}
   references:
     version: 2
     RefIds: []

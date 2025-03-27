@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
         moveDirection.y=0f;
 
         rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Acceleration);
+        _steeringController.velocity = rb.linearVelocity;
     }
-    
+
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class AvoidCollisionBehavior : SteeringBehavior
 {
-    public Vector3 ahead;
+    private Vector3 _ahead;
 
     public float maxSeeAhead;
 
@@ -15,42 +15,64 @@ public class AvoidCollisionBehavior : SteeringBehavior
     
     public override Vector3 GetSteeringForce()
     {
-
-        ahead = Velocity.normalized * maxSeeAhead;
-        GameObject mostThreateningObject = FindMostThreateningObstacle(spawnerObjects);
-
-        if (mostThreateningObject!=null)
+        Vector3 avoidance = Vector3.zero;
+        _ahead = Velocity.normalized * maxSeeAhead;
+        
+        Debug.DrawLine(Position, _ahead + Position, Color.green);
+        
+        GameObject treat = FindMostThreateningObstacle(spawnerObjects);
+        if (treat != null)
         {
-            Vector3 avoidance = ahead - mostThreateningObject.transform.position;
+            avoidance = _ahead - treat.transform.position;
             avoidance = avoidance.normalized * maxAvoidanceForce;
-            Debug.DrawLine(mostThreateningObject.transform.position, avoidance, Color.red);
-            Debug.DrawLine(Position, ahead, Color.green);
+            Debug.DrawLine(Position,treat.transform.position, Color.blue);
+        Debug.DrawLine(Position+_ahead,Position+_ahead+avoidance, Color.red);
+            
             return avoidance;
         }
-
-        return ahead;
-
-
+        
+        return avoidance;
     }
     public GameObject FindMostThreateningObstacle(List<GameObject> spawnerObjects)
     {
-        float maxDistance = Mathf.Infinity;
-
-        //No funciona
-        //No cambia al enemigo mas cercano
-
-        foreach (GameObject obstacle in spawnerObjects)
+        GameObject biggestTreat = null;
+        foreach (GameObject item in spawnerObjects)
         {
-            if ((obstacle.transform.position - Position).magnitude < maxDistance)
+            if (ClosestObstacle(item, biggestTreat) && AheadCollision(item, maxSeeAhead))
             {
-                maxDistance = (obstacle.transform.position - Position).magnitude;
-
-                return obstacle;
+                biggestTreat = item;
+               
             }
-            else return null;
         }
-        return null;
+        return biggestTreat;
     }
-
-
+    private bool AheadCollision(GameObject treat, float obstacleRadius)
+    {
+        float distance = (treat.transform.position - _ahead).magnitude;
+        return distance < obstacleRadius;
+    }
+    private bool ClosestObstacle(GameObject treat, GameObject biggestTreat)
+    {
+        if (biggestTreat == null || Vector3.Distance(Position, treat.transform.position)<Vector3.Distance(Position, biggestTreat.transform.position))
+        {
+            return true;
+        }
+        return false;
+        /*
+        float distance = (treat.transform.position - Position).magnitude;
+        float distanceBiggestTreat;
+        try
+        {
+             distanceBiggestTreat = (biggestTreat.transform.position - Position).magnitude;
+        }
+        catch
+        {
+            distanceBiggestTreat = 0;
+        }
+        if (biggestTreat == null|| distance > distanceBiggestTreat)
+        {
+            return true;
+        }
+        return false;*/
+    }
 }

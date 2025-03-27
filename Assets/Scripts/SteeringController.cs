@@ -7,7 +7,7 @@ public class SteeringController : MonoBehaviour
     [SerializeReference]
     public List<SteeringBehavior> behaviors = new List<SteeringBehavior>();
     public float maxForce = 10f;
-    private Vector3 _velocity;
+    public Vector3 velocity;
 
 
     private void FixedUpdate()
@@ -15,11 +15,11 @@ public class SteeringController : MonoBehaviour
         Vector3 totalForce =  Vector3.zero;
         foreach (var behavior in behaviors)
         {
-            behavior.UpdateMovementData(_velocity, transform.position);
+            behavior.UpdateMovementData(velocity, transform.position);
             totalForce = behavior.GetSteeringForce();
         }
 
-        _velocity = Vector3.ClampMagnitude(totalForce, maxForce);
-        transform.position += _velocity * Time.fixedDeltaTime;
+        velocity = Vector3.ClampMagnitude(totalForce, maxForce);
+        transform.position += velocity * Time.fixedDeltaTime;
     }
 }
