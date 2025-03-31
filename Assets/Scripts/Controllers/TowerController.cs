@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,7 +10,7 @@ public enum TowerType
     Enemy,
     Neutral
 }
-public class ToweController : MonoBehaviour
+public class TowerController : MonoBehaviour
 {
     private int _enemiesCount;
     private int _allysCount;
@@ -22,6 +23,8 @@ public class ToweController : MonoBehaviour
 
     public TextMeshProUGUI enemyCountTxt;
     public TextMeshProUGUI allyCountTxt;
+
+    private List<GameObject> _entities;
 
     private void Update()
     {
@@ -84,10 +87,12 @@ public class ToweController : MonoBehaviour
         {
             _allysCount++;
         }
+
+        _entities.Add(other.gameObject);
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Enemy")&& _enemiesCount>0)
+        if (other.CompareTag("Enemy")&& _enemiesCount > 0)
         {
             _enemiesCount--;
         }
@@ -95,6 +100,14 @@ public class ToweController : MonoBehaviour
         {
             _allysCount--;
         }
+
+        _entities.Remove(other.gameObject);
+    }
+
+    public void KillEverything()
+    {
+        _entities.ForEach(entity => Destroy(entity));
+        towerType = TowerType.Neutral;
     }
 }
 
