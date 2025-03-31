@@ -6,8 +6,6 @@ public class SeekBehavior : SteeringBehavior
     public float speed;
     public float slowingRadius = 5;
 
-    //Añadir un constructor
-    
     public SeekBehavior(Transform target, float speed)
     {
         this.target = target;

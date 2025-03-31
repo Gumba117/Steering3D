@@ -21,10 +21,8 @@ public class SpawnerController : MonoBehaviour
         _npcSpawner = new Spawner(npcPrefab, this);
         _npcSpawner.StartLimitSpawning(initialNpcs);
 
-
         StartCoroutine(CreateSeekEnemies(5));
         StartCoroutine(CreateFleeEnemies(5));
-
     }
     private IEnumerator CreateSeekEnemies(float watingTime)
     {
@@ -36,7 +34,6 @@ public class SpawnerController : MonoBehaviour
             enemy.GetComponent<SteeringController>().behaviors.Add(new SeekBehavior(  GameObject.Find("Player").transform, 5) { target = GameObject.Find("Player").transform, speed = 5, slowingRadius = 5 });
         }
     }
-
     private IEnumerator CreateFleeEnemies(float watingTime)
     {
         yield return new WaitForSeconds(watingTime);

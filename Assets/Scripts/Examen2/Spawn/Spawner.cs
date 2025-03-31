@@ -11,7 +11,6 @@ public class Spawner
     private MonoBehaviour _controller;
     private Coroutine _spawnRoutine;
 
-
     public Spawner(GameObject prefab, MonoBehaviour controller)
     {
         this.prefab = prefab;
