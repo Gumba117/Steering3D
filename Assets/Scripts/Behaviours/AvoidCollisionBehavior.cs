@@ -26,7 +26,7 @@ public class AvoidCollisionBehavior : SteeringBehavior
             avoidance = _ahead - treat.transform.position;
             avoidance = avoidance.normalized * maxAvoidanceForce;
             Debug.DrawLine(Position,treat.transform.position, Color.blue);
-        Debug.DrawLine(Position+_ahead,Position+_ahead+avoidance, Color.red);
+            Debug.DrawLine(Position+_ahead,Position+_ahead+avoidance, Color.red);
             
             return avoidance;
         }
@@ -41,7 +41,6 @@ public class AvoidCollisionBehavior : SteeringBehavior
             if (ClosestObstacle(item, biggestTreat) && AheadCollision(item, maxSeeAhead))
             {
                 biggestTreat = item;
-               
             }
         }
         return biggestTreat;

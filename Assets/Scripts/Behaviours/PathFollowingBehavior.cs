@@ -6,13 +6,13 @@ using System.Linq;
 public class PathFollowingBehavior : SteeringBehavior
 {
     public List<GameObject> path;
-    public float pointRadius;
-    public float speed;
-    public bool looping;
+    public float pointRadius = 5f;
+    public float speed = 10f;
+    public bool looping = true;
 
     private SeekBehavior _seek;
     private int _currentNode = 0;
-    private int _pathDirection;
+    private int _pathDirection= 1;
 
     public event Action HandlePathDirection;
 
@@ -33,11 +33,11 @@ public class PathFollowingBehavior : SteeringBehavior
     {
         if (IsAtNode())
         {
-            HandlePathDirection();
+            HandlePathDirection?.Invoke();
             UpdateCurrentNode();
         }
-
-        return Vector3.zero;
+        
+        return _seek.GetSteeringForce();
     }
     private bool IsAtNode()
     {
@@ -46,18 +46,18 @@ public class PathFollowingBehavior : SteeringBehavior
     private void UpdateCurrentNode()
     {
         _currentNode += _pathDirection;
+
         HandlePathDirection = looping ? HandleLooping : HandleNonLooping;
+
         _seek.target = path[_currentNode].transform;
     }
     private void HandleLooping()
     {
-        if (_currentNode >= path.Count || _currentNode < 0)
+        if (_currentNode >= path.Count - 1 || _currentNode <= 0)
         {
-
-            _pathDirection = 1;
+            _pathDirection *= -1;
             _currentNode += _pathDirection;
         }
-
 
     }
     private void HandleNonLooping()
@@ -66,9 +66,9 @@ public class PathFollowingBehavior : SteeringBehavior
         {
             _currentNode = 0;
         }
-        if (_currentNode >= path.Count)
+        if (_currentNode >= path.Count-1)
         {
-            _currentNode = path.Count - 1;
+            _currentNode -= 1;
         }
     }
 }

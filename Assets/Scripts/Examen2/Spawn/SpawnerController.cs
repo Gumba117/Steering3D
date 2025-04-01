@@ -6,7 +6,7 @@ public class SpawnerController : MonoBehaviour
     [Header("Enemy Variables")]
     public GameObject enemyPrefab;
     public int initialEnemies;
-    private Spawner _enemySpawner;
+    public Spawner enemySpawner;
 
     [Header("NPC Variables")]
     public GameObject npcPrefab;
@@ -15,8 +15,8 @@ public class SpawnerController : MonoBehaviour
 
     public void Start()
     {
-        _enemySpawner = new Spawner(enemyPrefab, this);
-        _enemySpawner.StartLimitSpawning(initialEnemies);
+        enemySpawner = new Spawner(enemyPrefab, this);
+        enemySpawner.StartLimitSpawning(initialEnemies);
 
         _npcSpawner = new Spawner(npcPrefab, this);
         _npcSpawner.StartLimitSpawning(initialNpcs);
@@ -27,7 +27,7 @@ public class SpawnerController : MonoBehaviour
     private IEnumerator CreateSeekEnemies(float watingTime)
     {
         yield return new WaitForSeconds(watingTime);
-        foreach (GameObject enemy in _enemySpawner.spawnedObjects)
+        foreach (GameObject enemy in enemySpawner.spawnedObjects)
         {
             enemy.GetComponent<SteeringController>().behaviors.Clear();
             

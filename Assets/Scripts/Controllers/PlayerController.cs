@@ -9,13 +9,24 @@ public class PlayerController : MonoBehaviour
     private SteeringController _steeringController;
 
     [SerializeField] private ObjstacleController _obstacleController;
+    [SerializeField] private SpawnerController _spawnerController;
 
     private void Start()
     {
         _steeringController = GetComponent<SteeringController>();
         _steeringController.behaviors.Clear();
-        
-        _steeringController.behaviors.Add(new AvoidCollisionBehavior() { spawnerObjects = _obstacleController.spawner.spawnedObjects, maxSeeAhead = 1f,  maxAvoidanceForce = 1f });
+
+        rb = GetComponent<Rigidbody>();
+
+        if (_obstacleController == null)
+        {
+            _steeringController.behaviors.Add(new AvoidCollisionBehavior() { spawnerObjects = _spawnerController.enemySpawner.spawnedObjects, maxSeeAhead = 1f,  maxAvoidanceForce = 1f });
+        }
+        else
+        {
+            _steeringController.behaviors.Add(new AvoidCollisionBehavior() { spawnerObjects = _obstacleController.spawner.spawnedObjects, maxSeeAhead = 1f,  maxAvoidanceForce = 1f });
+        }
+
         
     }
     void FixedUpdate()
