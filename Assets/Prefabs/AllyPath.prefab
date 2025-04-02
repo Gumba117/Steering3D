@@ -62,9 +62,11 @@ GameObject:
   - component: {fileID: 3000823818024750767}
   - component: {fileID: 6704249626139056445}
   - component: {fileID: 3080069531625384421}
+  - component: {fileID: -8139346917246897502}
+  - component: {fileID: 1545385846173470282}
   m_Layer: 0
-  m_Name: NPCPath
-  m_TagString: Untagged
+  m_Name: AllyPath
+  m_TagString: Ally
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -78,7 +80,7 @@ Transform:
   m_GameObject: {fileID: 2502715780066367466}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.33, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -218,3 +220,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-8139346917246897502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2502715780066367466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcb0f5849ca1bcf4f88e69fa7d08557f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topLimit: 100
+  bottomLimit: -100
+--- !u!114 &1545385846173470282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2502715780066367466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5db4c83f9fb716045989675c47192bf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  steeringController: {fileID: 0}
+  onTower: 0
+  allyType: 1

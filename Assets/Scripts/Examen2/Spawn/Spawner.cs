@@ -5,7 +5,8 @@ using UnityEngine;
 public class Spawner
 {
     public GameObject prefab;
-    public float[] spawnArea = { -40f, 40f, -40f, 40f };
+    public float[] spawnArea = { -70f, 70f, -70f, 70f };
+    public float[] spawnExclude = { -20f, 20f, -20f, 20f };
     public List<GameObject> spawnedObjects = new List<GameObject>();
 
     private MonoBehaviour _controller;
@@ -34,7 +35,7 @@ public class Spawner
     }
     private void Spawn()
     {
-        Vector3 newPosition = new Vector3(Random.Range(spawnArea[0], spawnArea[1]), 0.5f, Random.Range(spawnArea[2], spawnArea[3]));
+        Vector3 newPosition = SpawnExclude();
         GameObject newObject = GameObject.Instantiate(prefab, newPosition, Quaternion.identity);
         spawnedObjects.Add(newObject);
     }
@@ -45,5 +46,22 @@ public class Spawner
             yield return new WaitForSeconds(interval);
             Spawn();
         }
+    }
+
+    private Vector3 SpawnExclude()
+    {
+        float x, z;
+
+        bool LimitX, LimitZ;
+        do
+        {
+            x = Random.Range(spawnArea[0], spawnArea[1]);
+            z = Random.Range(spawnArea[2], spawnArea[3]);
+
+            LimitX = (x > spawnExclude[1] || x < spawnExclude[0]);
+            LimitZ = (z > spawnExclude[3] || z < spawnExclude[2]);
+
+        } while (!(LimitX && LimitZ));
+        return new Vector3(x, 0.5f, z);
     }
 }

@@ -3,44 +3,55 @@ using UnityEngine;
 
 public class SpawnerController : MonoBehaviour
 {
-    [Header("Enemy Variables")]
+    [Header("Normal Enemy Variables")]
     public GameObject enemyPrefab;
     public int initialEnemies;
     public Spawner enemySpawner;
 
-    [Header("NPC Variables")]
-    public GameObject npcPrefab;
-    public int initialNpcs;
-    private Spawner _npcSpawner;
+    [Header("Fast Enemy Variables")]
+    public GameObject fastEnemyPrefab;
+    public int initialFastEnemies;
+    public Spawner fastEnemySpawner;
+
+    [Header("Wander Ally Variables")]
+    public GameObject wanderAllyPrefab;
+    public int initialWanderAllys;
+    private Spawner _wanderAllySpawner;
+
+    [Header("Path Ally Variables")]
+    public GameObject pathAllyPrefab;
+    public int initialPathAllys;
+    private Spawner _pathAllySpawner;
+
+    [Header("Ally Variables")]
+    public GameObject allyPrefab;
+    public int initialAllys;
+    private Spawner _allySpawner;
+
+    [SerializeField]private TowerController[] _towers;
+
+    //INYECTAR TOWERS A LOS ENEMIGOS RAPIDOS
 
     public void Start()
     {
         enemySpawner = new Spawner(enemyPrefab, this);
         enemySpawner.StartLimitSpawning(initialEnemies);
 
-        _npcSpawner = new Spawner(npcPrefab, this);
-        _npcSpawner.StartLimitSpawning(initialNpcs);
+        fastEnemyPrefab.GetComponent<EnemyController>().towers = _towers;
+        fastEnemySpawner = new Spawner(fastEnemyPrefab, this);
+        fastEnemySpawner.StartLimitSpawning(initialFastEnemies);
 
-        StartCoroutine(CreateSeekEnemies(5));
-        StartCoroutine(CreateFleeEnemies(5));
+        _wanderAllySpawner = new Spawner(wanderAllyPrefab, this);
+        _wanderAllySpawner.StartLimitSpawning(initialWanderAllys);
+
+        _pathAllySpawner = new Spawner(pathAllyPrefab, this);
+        _pathAllySpawner.StartLimitSpawning(initialPathAllys);
+
+        _allySpawner = new Spawner(allyPrefab, this);
+        _allySpawner.StartLimitSpawning(initialAllys);
+
+        
     }
-    private IEnumerator CreateSeekEnemies(float watingTime)
-    {
-        yield return new WaitForSeconds(watingTime);
-        foreach (GameObject enemy in enemySpawner.spawnedObjects)
-        {
-            enemy.GetComponent<SteeringController>().behaviors.Clear();
-            
-            enemy.GetComponent<SteeringController>().behaviors.Add(new SeekBehavior(  GameObject.Find("Player").transform, 5) { target = GameObject.Find("Player").transform, speed = 5, slowingRadius = 5 });
-        }
-    }
-    private IEnumerator CreateFleeEnemies(float watingTime)
-    {
-        yield return new WaitForSeconds(watingTime);
-        foreach (GameObject enemy in _npcSpawner.spawnedObjects)
-        {
-            enemy.GetComponent<SteeringController>().behaviors.Clear();
-            enemy.GetComponent<SteeringController>().behaviors.Add(new FleeBehavior { target = GameObject.Find("Player").transform, speed = 5, slowingRadius = 5 });
-        }
-    }
+
+    
 }

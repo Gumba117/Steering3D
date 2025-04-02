@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 8391798512136391912}
   - component: {fileID: 3336452931161208189}
   - component: {fileID: 5566379774955651950}
-  - component: {fileID: -7723069087283596230}
-  - component: {fileID: 7077731495097955410}
+  - component: {fileID: -6037446766598766051}
+  - component: {fileID: 9123612886134088276}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: FastEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 10, y: 1, z: 0.05}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -69,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0451beaaf05bdfc41901814b7fa92898, type: 2}
+  - {fileID: 2100000, guid: 63f8757c73a6a354d883b47bd3c37218, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topLimit: 100
   bottomLimit: -100
---- !u!114 &-7723069087283596230
+--- !u!114 &-6037446766598766051
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -167,10 +167,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   steeringController: {fileID: 0}
   onTower: 0
-  enemyType: 0
+  enemyType: 1
   health: 0
-  towers: []
---- !u!114 &7077731495097955410
+  towers:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &9123612886134088276
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

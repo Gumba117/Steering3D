@@ -12,7 +12,7 @@ public enum TowerType
 }
 public class TowerController : MonoBehaviour
 {
-    private int _enemiesCount;
+    public int enemiesCount;
     private int _allysCount;
     public TowerType towerType = TowerType.Neutral;
     [SerializeField] private MeshRenderer _meshRenderer;
@@ -24,7 +24,7 @@ public class TowerController : MonoBehaviour
     public TextMeshProUGUI enemyCountTxt;
     public TextMeshProUGUI allyCountTxt;
 
-    private List<GameObject> _entities;
+    private List<GameObject> _entities = new List<GameObject>();
 
     private void Update()
     {
@@ -33,7 +33,7 @@ public class TowerController : MonoBehaviour
         {
             case TowerType.Ally:
                 _meshRenderer.material.color = Color.blue;
-                if (_enemiesCount > (_allysCount+_allysCount/2))
+                if (enemiesCount > (_allysCount+_allysCount/2))
                 {
                     _enemyTowerTime += Time.deltaTime;
                 }
@@ -41,18 +41,18 @@ public class TowerController : MonoBehaviour
                 break;
             case TowerType.Enemy:
                 _meshRenderer.material.color = Color.red;
-                if (_allysCount > (_enemiesCount + _enemiesCount / 2))
+                if (_allysCount > (enemiesCount + enemiesCount / 2))
                 {
                     _allyTowerTime += Time.deltaTime;
                 }
                 break;
             case TowerType.Neutral:
                 _meshRenderer.material.color = Color.white;
-                if (_enemiesCount > _allysCount)
+                if (enemiesCount > _allysCount)
                 {
                     _enemyTowerTime += Time.deltaTime;
                 }
-                else if (_enemiesCount < _allysCount)
+                else if (enemiesCount < _allysCount)
                 {
                     _allyTowerTime += Time.deltaTime;
                 }
@@ -71,7 +71,7 @@ public class TowerController : MonoBehaviour
             towerType = TowerType.Ally;
         }
 
-        enemyCountTxt.text = "Enemy Time: \n" + (_conquerTime-_enemyTowerTime) + "\nEnemys: \n" + _enemiesCount.ToString();
+        enemyCountTxt.text = "Enemy Time: \n" + (_conquerTime-_enemyTowerTime) + "\nEnemys: \n" + enemiesCount.ToString();
         allyCountTxt.text = "Ally Time: \n" + (_conquerTime-_allyTowerTime) + "\nAllys: \n" + _allysCount.ToString();
 
         _enemyTowerTime = Mathf.Clamp(_enemyTowerTime, 0, _conquerTime);
@@ -81,27 +81,40 @@ public class TowerController : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            _enemiesCount++;
+            enemiesCount++;
+            if (other.GetComponent<EnemyController>().enemyType == EnemyController.EnemyType.Normal)
+            {
+                other.GetComponent<EnemyController>().GoToTower(gameObject.transform);
+            }
+
+            other.GetComponent<EnemyController>().onTower=true;
+            _entities.Add(other.gameObject);
+
         }
         else if (other.CompareTag("Ally"))
         {
             _allysCount++;
+            _entities.Add(other.gameObject);
         }
-
-        _entities.Add(other.gameObject);
+        
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Enemy")&& _enemiesCount > 0)
+        if (other.CompareTag("Enemy")&& enemiesCount > 0)
         {
-            _enemiesCount--;
+            enemiesCount--;
+            _entities.Remove(other.gameObject);
+
+
+            other.GetComponent<EnemyController>().onTower = false;
+
         }
         else if (other.CompareTag("Ally") && _allysCount > 0)
         {
             _allysCount--;
+            _entities.Remove(other.gameObject);
         }
 
-        _entities.Remove(other.gameObject);
     }
 
     public void KillEverything()

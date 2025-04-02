@@ -17,6 +17,7 @@ public class NPCPathController : MonoBehaviour
 
     private void HandlePathSpawned(List<GameObject> path)
     {
+        steeringController.behaviors.Clear();
         steeringController.behaviors.Add(new PathFollowingBehavior(path, steeringController));
         //Debug.Log("Path sended");
     }
