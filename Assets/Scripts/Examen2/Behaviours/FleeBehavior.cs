@@ -8,7 +8,6 @@ public class FleeBehavior : SteeringBehavior
 
     public override Vector3 GetSteeringForce()
     {
-
         float desiredSpeed;
 
         float distance = (target.position - Position).magnitude;
@@ -23,6 +22,5 @@ public class FleeBehavior : SteeringBehavior
         }
 
         return -(target.position - Position).normalized * desiredSpeed;
-       
     }
 }

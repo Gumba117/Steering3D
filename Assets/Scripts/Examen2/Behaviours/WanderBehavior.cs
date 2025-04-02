@@ -4,26 +4,17 @@ using UnityEngine.UIElements;
 public class WanderBehavior : SteeringBehavior
 {
     private Vector3 _wanderTarget;
-
-    public float speed;
-    public float slowingRadius = 5;
-
-    public float circleDistance;
-    public float circleRadius;
-
-    public float wanderAngle;
-
-    public float targetTime, angleTime;
-
     private float _targetCoolDown = 0;
     private float _angleCoolDown = 0;
+
+    public float slowingRadius = 5;
+    public float targetTime, angleTime, wanderAngle, circleRadius, circleDistance, speed;
 
     public override Vector3 GetSteeringForce()
     {
         float desiredSpeed;
 
         float distance = (_wanderTarget - Position).magnitude;
-
 
         if (distance < slowingRadius)
         {
@@ -34,7 +25,6 @@ public class WanderBehavior : SteeringBehavior
             desiredSpeed = speed;
         }
 
-        //Wander timers
         _angleCoolDown += Time.deltaTime;
         _targetCoolDown += Time.deltaTime;
 
@@ -60,8 +50,7 @@ public class WanderBehavior : SteeringBehavior
     }
     private void ChangeTarget()
     {
-        _wanderTarget = new Vector3(Random.Range(-150, 150), 0.5f, Random.Range(-150,150));
-        
+        _wanderTarget = new Vector3(Random.Range(-125, 125), 0.5f, Random.Range(-125,125));
     }
     private void ChangeAngle()
     {
@@ -83,6 +72,4 @@ public class WanderBehavior : SteeringBehavior
 
         return angle / 2;
     }
-
-
 }

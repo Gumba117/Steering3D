@@ -1,8 +1,5 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
-
 public enum CentralTowerType
 {
     Ally,
@@ -11,33 +8,25 @@ public enum CentralTowerType
 }
 public class CentralTowerController : MonoBehaviour
 {
-    private int _enemiesCount;
-    private int _allysCount;
+    public TowerController lastTowerConquered;
+    public TextMeshProUGUI enemyCountTxt, allyCountTxt;
+    public bool gameOver = false, win = false, lose = false;
     public TowerType towerType = TowerType.Neutral;
+
     [SerializeField] private MeshRenderer _meshRenderer;
-
-    [SerializeField] private float _conquerTime = 30f;
-    [SerializeField] private float _activeTime = 60f;
-    private float _enemyTowerTime;
-    private float _allyTowerTime;
-
-    private float _activeCentralTowerTime;
-
-    private bool _isActive = false;
-
+    [SerializeField] private float _conquerTime = 30f, _activeTime = 60f;
     [SerializeField] private TowerController[] _towers;
-
-    public TextMeshProUGUI enemyCountTxt;
-    public TextMeshProUGUI allyCountTxt;
-
+    private int _allysCount, _enemiesCount;
+    private float _enemyTowerTime, _allyTowerTime, _activeCentralTowerTime;
+    private bool _isActive = false;
     private void Update()
     {
+        LastConquerTower();
         if (_isActive == false) 
         {
             ActivateCentralTower();
             return;
         }
-
         switch (towerType)
         {
             case TowerType.Ally:
@@ -46,7 +35,6 @@ public class CentralTowerController : MonoBehaviour
                 {
                     _enemyTowerTime += Time.deltaTime;
                 }
-                
                 break;
             case TowerType.Enemy:
                 _meshRenderer.material.color = Color.red;
@@ -79,10 +67,8 @@ public class CentralTowerController : MonoBehaviour
             _enemyTowerTime = 0;
             towerType = TowerType.Ally;
         }
-
         enemyCountTxt.text = "Enemy Time: \n" + (_conquerTime-_enemyTowerTime) + "\nEnemys: \n" + _enemiesCount.ToString();
         allyCountTxt.text = "Ally Time: \n" + (_conquerTime-_allyTowerTime) + "\nAllys: \n" + _allysCount.ToString();
-
         if (_activeCentralTowerTime >= _activeTime && towerType == TowerType.Neutral)
         {
             _activeCentralTowerTime = 0;
@@ -94,12 +80,14 @@ public class CentralTowerController : MonoBehaviour
         }
         else if (_activeCentralTowerTime >= _activeTime && towerType == TowerType.Ally)
         {
-            //Ganan los aliados
+            win = true;
+            gameOver = true;
             Time.timeScale = 0;
         }
         else if (_activeCentralTowerTime >= _activeTime && towerType == TowerType.Enemy)
         {
-            //Ganan los enemigos
+            gameOver = true;
+            lose = true;
             Time.timeScale = 0;
         }
         _activeCentralTowerTime += Time.deltaTime;
@@ -131,9 +119,7 @@ public class CentralTowerController : MonoBehaviour
     }
     public void ActivateCentralTower()
     {
-        int tAllys = 0;
-        int tEnemys = 0;
-
+        int tAllys = 0, tEnemys = 0;
         float tTime = 0;
 
         foreach (TowerController tower in _towers)
@@ -159,6 +145,17 @@ public class CentralTowerController : MonoBehaviour
         if (tTime>=_conquerTime)
         {
             _isActive = true;
+        }
+    }
+    public void LastConquerTower()
+    {
+        foreach (TowerController tower in _towers)
+        {
+            if (tower.isConquered)
+            {
+                lastTowerConquered = tower;
+            }
+            tower.isConquered = false;
         }
     }
 }

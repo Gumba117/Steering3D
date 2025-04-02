@@ -8,31 +8,23 @@ public class PlayerController : MonoBehaviour
     public Rigidbody rb;
     public float moveSpeed;
 
-
     [SerializeField] private  Material _material;
+    [SerializeField] private GameObject[] _towers;
+    private bool _isStunned = false;
+    private List<AllyController> _allysFollowing;
 
     //private SteeringController _steeringController; //AVOID COLLISION BEHAVIOR
     //[SerializeField] private ObjstacleController _obstacleController; //AVOID COLLISION BEHAVIOR
     //[SerializeField] private SpawnerController _spawnerController; //AVOID COLLISION BEHAVIOR
-
-    private bool _isStunned = false;
-
-    [SerializeField]private GameObject[] _towers;
-
-
-    private List<AllyController> _allysFollowing;
-
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-
-
         /*
-        _steeringController.behaviors.Clear();
-        _steeringController = GetComponent<SteeringController>();
          * Avoid Collision Behavior
          *         Que se supone que deberia funcionar
          *                 Pero me dijo que siguiera con el examen... 
+        _steeringController.behaviors.Clear();
+        _steeringController = GetComponent<SteeringController>();
         if (_obstacleController == null)
         {
             _steeringController.behaviors.Add(new AvoidCollisionBehavior() { spawnerObjects = _spawnerController.enemySpawner.spawnedObjects, maxSeeAhead = 1f,  maxAvoidanceForce = 1f });
@@ -42,7 +34,6 @@ public class PlayerController : MonoBehaviour
             _steeringController.behaviors.Add(new AvoidCollisionBehavior() { spawnerObjects = _obstacleController.spawner.spawnedObjects, maxSeeAhead = 1f,  maxAvoidanceForce = 1f });
         }
         */
-
     }
     void FixedUpdate()
     {
@@ -59,9 +50,8 @@ public class PlayerController : MonoBehaviour
         moveDirection.y=0f;
 
         rb.AddForce(moveDirection.normalized * moveSpeed, ForceMode.Acceleration);
-        //_steeringController.velocity = rb.linearVelocity;
+        //_steeringController.velocity = rb.linearVelocity; //AVOID COLLISION BEHAVIOR
     }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
@@ -69,7 +59,6 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Stun(3f));
         }
     }
-
     private IEnumerator Stun(float watingTime)
     {
         _isStunned = true;
@@ -79,7 +68,6 @@ public class PlayerController : MonoBehaviour
         _material.color = Color.blue;
 
     }
-
     public void AddAlly(GameObject ally)
     {
         if (_allysFollowing == null)
@@ -88,10 +76,8 @@ public class PlayerController : MonoBehaviour
         }
         _allysFollowing.Add(ally.GetComponent<AllyController>());
     }
-
     public void SelectTower()
     {
-        
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             AllysToTower(_towers[0]);
@@ -109,14 +95,11 @@ public class PlayerController : MonoBehaviour
             AllysToTower(_towers[3]);
         }
     }
-
     public void RemoveAllAllys()
     {
         if (_allysFollowing == null) return;
-
         _allysFollowing.Clear();
     }
-
     public void AllysToTower(GameObject tower)
     {
         if (_allysFollowing == null) return;

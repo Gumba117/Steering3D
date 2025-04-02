@@ -11,17 +11,12 @@ public class NPCPathController : MonoBehaviour
     {
         steeringController = GetComponent<SteeringController>();
         StartCoroutine(WaitPathSpawned());
-        //emptyController.OnpathSpawned += HandlePathSpawned;
-
     }
-
     private void HandlePathSpawned(List<GameObject> path)
     {
         steeringController.behaviors.Clear();
         steeringController.behaviors.Add(new PathFollowingBehavior(path, steeringController));
-        //Debug.Log("Path sended");
     }
-
     private IEnumerator WaitPathSpawned()
     {
         yield return new WaitForSeconds(1f);

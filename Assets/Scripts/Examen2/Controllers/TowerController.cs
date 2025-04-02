@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
-
 public enum TowerType
 {
     Ally,
@@ -13,22 +10,19 @@ public enum TowerType
 public class TowerController : MonoBehaviour
 {
     public int enemiesCount;
-    private int _allysCount;
     public TowerType towerType = TowerType.Neutral;
+    public TextMeshProUGUI enemyCountTxt, allyCountTxt;
+    public bool isConquered = false;
+
     [SerializeField] private MeshRenderer _meshRenderer;
-
     [SerializeField] private float _conquerTime;
-    private float _enemyTowerTime;
-    private float _allyTowerTime;
-
-    public TextMeshProUGUI enemyCountTxt;
-    public TextMeshProUGUI allyCountTxt;
-
+    [SerializeField] private SpawnerController _spawnerController;
+    private int _allysCount;
+    private float _enemyTowerTime, _allyTowerTime;
     private List<GameObject> _entities = new List<GameObject>();
 
     private void Update()
     {
-
         switch (towerType)
         {
             case TowerType.Ally:
@@ -37,7 +31,6 @@ public class TowerController : MonoBehaviour
                 {
                     _enemyTowerTime += Time.deltaTime;
                 }
-                
                 break;
             case TowerType.Enemy:
                 _meshRenderer.material.color = Color.red;
@@ -48,6 +41,7 @@ public class TowerController : MonoBehaviour
                 break;
             case TowerType.Neutral:
                 _meshRenderer.material.color = Color.white;
+                isConquered = false;
                 if (enemiesCount > _allysCount)
                 {
                     _enemyTowerTime += Time.deltaTime;
@@ -60,8 +54,12 @@ public class TowerController : MonoBehaviour
         }
         if (_enemyTowerTime >= _conquerTime)
         {
+            isConquered = true;
             _allyTowerTime = 0;
             _enemyTowerTime = 0;
+            _spawnerController.miniBossCount += 1;
+            _spawnerController.bossCount += 1;
+            _spawnerController.speedUp = true;
             towerType = TowerType.Enemy;
         }
         else if (_allyTowerTime >= _conquerTime)
@@ -73,7 +71,6 @@ public class TowerController : MonoBehaviour
 
         enemyCountTxt.text = "Enemy Time: \n" + (_conquerTime-_enemyTowerTime) + "\nEnemys: \n" + enemiesCount.ToString();
         allyCountTxt.text = "Ally Time: \n" + (_conquerTime-_allyTowerTime) + "\nAllys: \n" + _allysCount.ToString();
-
         _enemyTowerTime = Mathf.Clamp(_enemyTowerTime, 0, _conquerTime);
         _allyTowerTime = Mathf.Clamp(_allyTowerTime, 0, _conquerTime);
     }
@@ -81,7 +78,7 @@ public class TowerController : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            enemiesCount++;
+            enemiesCount += other.GetComponent<EnemyController>().health;
             if (other.GetComponent<EnemyController>().enemyType == EnemyController.EnemyType.Normal)
             {
                 other.GetComponent<EnemyController>().GoToTower(gameObject.transform);
@@ -89,34 +86,27 @@ public class TowerController : MonoBehaviour
 
             other.GetComponent<EnemyController>().onTower=true;
             _entities.Add(other.gameObject);
-
         }
         else if (other.CompareTag("Ally"))
         {
             _allysCount++;
             _entities.Add(other.gameObject);
         }
-        
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Enemy")&& enemiesCount > 0)
         {
-            enemiesCount--;
+            enemiesCount -= other.GetComponent<EnemyController>().health;
             _entities.Remove(other.gameObject);
-
-
             other.GetComponent<EnemyController>().onTower = false;
-
         }
         else if (other.CompareTag("Ally") && _allysCount > 0)
         {
             _allysCount--;
             _entities.Remove(other.gameObject);
         }
-
     }
-
     public void KillEverything()
     {
         _entities.ForEach(entity => Destroy(entity));

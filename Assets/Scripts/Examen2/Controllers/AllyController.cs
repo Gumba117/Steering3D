@@ -25,19 +25,14 @@ public class AllyController : MonoBehaviour
                 break;
             case AllyType.Estatic:
                 steeringController.behaviors.Clear();
-
-                break;
-            default:
                 break;
         }
     }
-
     public void GoToTower(Transform tower)
     {
         steeringController.behaviors.Clear();
         steeringController.behaviors.Add(new SeekBehavior(tower, 5) { target = tower, speed = 5, slowingRadius = 0 });
     }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
@@ -50,7 +45,6 @@ public class AllyController : MonoBehaviour
             collision.gameObject.GetComponent<PlayerController>().AddAlly(this.gameObject);
         }
     }
-
     //HACER UN FOLLOW THE LIDER
     public void GoToPlayer(Transform player)
     {

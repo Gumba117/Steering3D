@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 6134062690010677559}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10, y: 1, z: 0.05}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -137,7 +137,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &5566379774955651950
 MonoBehaviour:
@@ -170,6 +170,7 @@ MonoBehaviour:
   enemyType: 0
   health: 0
   towers: []
+  centralTower: {fileID: 0}
 --- !u!114 &7077731495097955410
 MonoBehaviour:
   m_ObjectHideFlags: 0

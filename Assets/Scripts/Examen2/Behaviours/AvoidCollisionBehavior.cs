@@ -1,16 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
-
 [System.Serializable]
-
 public class AvoidCollisionBehavior : SteeringBehavior
 {
     private Vector3 _ahead;
 
-    public float maxSeeAhead;
-
-    public float maxAvoidanceForce;
-
+    public float maxSeeAhead, maxAvoidanceForce;
     public List<GameObject> spawnerObjects;
     
     public override Vector3 GetSteeringForce()
@@ -30,7 +25,6 @@ public class AvoidCollisionBehavior : SteeringBehavior
             
             return avoidance;
         }
-        
         return avoidance;
     }
     public GameObject FindMostThreateningObstacle(List<GameObject> spawnerObjects)
@@ -57,21 +51,5 @@ public class AvoidCollisionBehavior : SteeringBehavior
             return true;
         }
         return false;
-        /*
-        float distance = (treat.transform.position - Position).magnitude;
-        float distanceBiggestTreat;
-        try
-        {
-             distanceBiggestTreat = (biggestTreat.transform.position - Position).magnitude;
-        }
-        catch
-        {
-            distanceBiggestTreat = 0;
-        }
-        if (biggestTreat == null|| distance > distanceBiggestTreat)
-        {
-            return true;
-        }
-        return false;*/
     }
 }

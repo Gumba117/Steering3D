@@ -9,7 +9,6 @@ public class SteeringController : MonoBehaviour
     public float maxForce = 10f;
     public Vector3 velocity;
 
-
     private void FixedUpdate()
     {
         Vector3 totalForce =  Vector3.zero;

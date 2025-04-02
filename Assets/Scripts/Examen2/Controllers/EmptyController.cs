@@ -1,12 +1,10 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-
 public class EmptyController : MonoBehaviour
 {
     public GameObject prefab;
     public int obstacleLimit = 10;
-
     public event Action <List<GameObject>> OnpathSpawned;
     public List<GameObject> path;
 

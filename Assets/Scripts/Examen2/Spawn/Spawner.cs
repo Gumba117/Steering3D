@@ -5,13 +5,13 @@ using UnityEngine;
 public class Spawner
 {
     public GameObject prefab;
-    public float[] spawnArea = { -70f, 70f, -70f, 70f };
-    public float[] spawnExclude = { -20f, 20f, -20f, 20f };
+    public float[] spawnArea = { -70f, 70f, -70f, 70f }, spawnExclude = { -20f, 20f, -20f, 20f };
+    public Vector3 spawnPoint;
+    public bool randomSpawn = true;
     public List<GameObject> spawnedObjects = new List<GameObject>();
 
     private MonoBehaviour _controller;
     private Coroutine _spawnRoutine;
-
     public Spawner(GameObject prefab, MonoBehaviour controller)
     {
         this.prefab = prefab;
@@ -20,7 +20,6 @@ public class Spawner
     public void StartTimeSpawning(float interval)
     {
         _spawnRoutine = _controller.StartCoroutine(SpawnRoutine(interval));
-
     }
     public void StopSpawning() 
     {
@@ -35,7 +34,15 @@ public class Spawner
     }
     private void Spawn()
     {
-        Vector3 newPosition = SpawnExclude();
+        Vector3 newPosition;
+        if (randomSpawn)
+        {
+            newPosition = SpawnExclude();
+        }
+        else
+        {
+            newPosition = spawnPoint;
+        }
         GameObject newObject = GameObject.Instantiate(prefab, newPosition, Quaternion.identity);
         spawnedObjects.Add(newObject);
     }
@@ -47,11 +54,9 @@ public class Spawner
             Spawn();
         }
     }
-
     private Vector3 SpawnExclude()
     {
         float x, z;
-
         bool LimitX, LimitZ;
         do
         {

@@ -9,12 +9,11 @@ public class PathFollowingBehavior : SteeringBehavior
     public float pointRadius = 5f;
     public float speed = 10f;
     public bool looping = true;
+    public event Action HandlePathDirection;
 
     private SeekBehavior _seek;
     private int _currentNode = 0;
     private int _pathDirection= 1;
-
-    public event Action HandlePathDirection;
 
     public PathFollowingBehavior(List<GameObject> path, SteeringController steering)
     {
@@ -28,7 +27,6 @@ public class PathFollowingBehavior : SteeringBehavior
         _seek.speed = speed;
         _seek.target = path[_currentNode].transform;
     }
-
     public override Vector3 GetSteeringForce()
     {
         if (IsAtNode())
@@ -58,7 +56,6 @@ public class PathFollowingBehavior : SteeringBehavior
             _pathDirection *= -1;
             _currentNode += _pathDirection;
         }
-
     }
     private void HandleNonLooping()
     {

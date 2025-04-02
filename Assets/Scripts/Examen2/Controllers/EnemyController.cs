@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class EnemyController : MonoBehaviour
 {
     public enum EnemyType
@@ -9,15 +8,12 @@ public class EnemyController : MonoBehaviour
         MiniBoss,
         Boss
     }
-
     public SteeringController steeringController;
     public bool onTower;
     public EnemyType enemyType;
-
     public int health;
-
     public TowerController[] towers;
-
+    public GameObject centralTower;
 
     private void Start()
     {
@@ -32,7 +28,6 @@ public class EnemyController : MonoBehaviour
             case EnemyType.Fast:
                 health = 1;
                 TowerController weakestTower = towers[0];
-                
                 foreach (TowerController tower in towers)
                 {
                     if (tower.enemiesCount < weakestTower.enemiesCount)
@@ -44,16 +39,18 @@ public class EnemyController : MonoBehaviour
                 break;
             case EnemyType.MiniBoss:
                 health = 10;
+                steeringController.behaviors.Clear();
+                steeringController.behaviors.Add(new SeekBehavior(centralTower.transform, 2) { target = centralTower.transform, speed = 2, slowingRadius = 0 });
                 break;
             case EnemyType.Boss:
                 health = 20;
+                steeringController.behaviors.Clear();
+                steeringController.behaviors.Add(new SeekBehavior(centralTower.transform, 2) { target = centralTower.transform, speed = 2, slowingRadius = 0 });
                 break;
             default:
                 break;
         }
-        
     }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Ally"))
@@ -68,13 +65,11 @@ public class EnemyController : MonoBehaviour
             }
         }
     }
-
     public void GoToTower(Transform tower)
     {
         steeringController.behaviors.Clear();
         steeringController.behaviors.Add(new SeekBehavior(tower, 5) { target = tower, speed = 5, slowingRadius = 0 });
     }
-
     public void TakeDamage(int damage)
     {
         health -= damage;
