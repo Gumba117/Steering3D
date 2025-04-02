@@ -55,11 +55,7 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") || collision.gameObject.CompareTag("Ally"))
         {
-            if (onTower && (enemyType == EnemyType.Normal || enemyType == EnemyType.Fast))
-            {
-                
-            }
-            else
+            if (onTower == false)
             {
                 TakeDamage(1);
             }
